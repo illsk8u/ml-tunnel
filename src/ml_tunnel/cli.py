@@ -1,6 +1,14 @@
+import logging
 import argparse
 import os
 import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -39,15 +47,15 @@ def parse_args():
 
 def validate_args(args):
     if not os.path.exists(args.model):
-        print(f"Error: Model not found: {args.model}")
+        logger.error(f"Error: Model not found: {args.model}")
         return False
     
     if not args.model.lower().endswith('.onnx'):
-        print(f"Models extension must be .onnx: {args.model}")
+        logger.error(f"Models extension must be .onnx: {args.model}")
         return False
     
     if args.port < 1 or args.port > 65535:
-        print(f"invalid port: {args.port}")
+        logger.error(f"invalid port: {args.port}")
         return False
     
     return True
@@ -70,8 +78,8 @@ def main():
         )
         
     except KeyboardInterrupt:
-        print("Server was stopped by user")
+        logger.info("Server was stopped by user")
         sys.exit(0)
     except Exception as e:
-        print(f"Exception: {e}")
+        logger.exception(f"Exception: {e}")
         sys.exit(1)
