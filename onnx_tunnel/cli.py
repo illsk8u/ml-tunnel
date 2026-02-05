@@ -3,6 +3,9 @@ import argparse
 import os
 import sys
 
+from .registry import RegistryTypes
+
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -12,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        prog="ml-tunnel",
+        prog="onnx-tunnel",
         description="FastAPI server for ONNX models",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
                 Usage examples:
                 %(prog)s --model model.onnx
-                %(prog)s --model model.onnx --port 8080 --host 127.0.0.1
+                %(prog)s --model model.onnx --provider onnx --port 8080 --host 127.0.0.1
             """
     )
 
@@ -27,6 +30,13 @@ def parse_args():
         type=str,
         required=True,
         help="Path to .onnx model (required)"
+    )
+
+    parser.add_argument(
+        "--provider", 
+        type=str,
+        default="onnx",
+        help="Model provider (default: onnx)"
     )
 
     parser.add_argument(
@@ -54,6 +64,10 @@ def validate_args(args):
         logger.error(f"Models extension must be .onnx: {args.model}")
         return False
     
+    if not args.provider in RegistryTypes.__members__.values():
+        logger.error(f"Invalid provider. Available providers: {RegistryTypes.__members__.values()}")
+        return False
+
     if args.port < 1 or args.port > 65535:
         logger.error(f"invalid port: {args.port}")
         return False
