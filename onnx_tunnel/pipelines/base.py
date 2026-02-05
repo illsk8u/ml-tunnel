@@ -1,16 +1,17 @@
 from typing import TypeVar, Generic
 
 InputType = TypeVar('InputType')
-ModelDataType = TypeVar('ModelDataType')
+InputModelDataType = TypeVar('InputModelDataType')
+OutputModelDataType = TypeVar('OutputModelDataType')
 OutputType = TypeVar('OutputType')
 
 
-class BasePipeline(Generic[InputType, ModelDataType, OutputType]):
+class BasePipeline(Generic[InputType, InputModelDataType, OutputModelDataType, OutputType]):
 
     @staticmethod
-    def preprocess(data: InputType) -> ModelDataType:
+    def preprocess(data: InputType) -> InputModelDataType:
         raise NotImplementedError("Preprocess not implemented.")
 
     @staticmethod
-    def postprocess(data: ModelDataType) -> OutputType:
+    def postprocess(data: OutputModelDataType) -> OutputType:
         raise NotImplementedError("Postprocess not implemented.")
