@@ -13,7 +13,7 @@ def create_app(args) -> FastAPI:
     app.include_router(index_router)
 
 
+    app.state.model_path = args.model
     app.state.provider = RegistryTypes(args.provider)
-
 
     return app
