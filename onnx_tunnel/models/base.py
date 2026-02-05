@@ -1,17 +1,18 @@
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 
-ModelDataType = TypeVar('ModelDataType')
+InputModelDataType = TypeVar('InputModelDataType')
+OutputModelDataType = TypeVar('OutputModelDataType')
 
 
-class BaseModel(Generic[ModelDataType], ABC):
+class BaseModel(Generic[InputModelDataType, OutputModelDataType], ABC):
     
     def __init__(self, model_path: str):
         self.model_path = model_path
 
 
     @abstractmethod
-    def predict(self, data: ModelDataType) -> ModelDataType:
+    def predict(self, data: InputModelDataType) -> OutputModelDataType:
         pass
 
     
