@@ -83,10 +83,10 @@ def main():
             sys.exit(1)
         
         import uvicorn
-        from .server import app
+        from .server import create_app
         
         uvicorn.run(
-            app,
+            create_app(args),
             host=args.host,
             port=args.port,
         )
