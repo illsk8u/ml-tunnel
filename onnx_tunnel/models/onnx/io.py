@@ -1,10 +1,12 @@
-from typing import Any, List, TypedDict
+from typing import List, TypedDict
 
 import numpy as np
 
 
 class ONNXModelInput(TypedDict):
     inputs: List[np.ndarray]
-    outputs: List[np.ndarray]
+    output_names: List[str]
 
-ONNXModelOutput = Any
+
+class ONNXModelOutput(TypedDict):
+    outputs: List[np.ndarray]
